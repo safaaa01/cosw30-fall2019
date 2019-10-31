@@ -1,0 +1,16 @@
+.nav-side-menu {
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  width: 200px;
+  height: 100vh;
+}
+.brand {
+  line-height: 50px;
+  display: block;
+}
+.row img { width: 100%
+hight: 100%
+
+}
+
