@@ -9,8 +9,19 @@
   line-height: 50px;
   display: block;
 }
-.row img { width: 100%
-hight: 100%
 
+.table, .text-success, .text-warning, input {
+    font-size: 1.1em !important;
 }
+
+@media only screen and (max-width: 600px) {
+  footer {
+
+  }
+}
+@media only screen and (max-width: 600px) {
+  header {
+
+      }
+  }
 

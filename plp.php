@@ -1,124 +1,60 @@
 <?php include 'includes/header.php'; ?>
+<?php include 'model/product.php'; ?>
+
+<?php
+
+//fetch products table from server
+if(isset($_GET['category_id'])){	
+    $rows = getProductsByCategory($_GET['category_id']);	
+} else {	
+    $rows = getProducts();	
+}
+
+//count number of rows in products table
+$totalRows = 0;
+foreach ($rows as $row){
+    $totalRows++;
+}
+
+//fetch product review count table from server
+$reviewQueryArray = getQueryProductReviewCount();
+
+?>
 
 <main class="container">
-<!--Product List-->
-    <div class="row"> <!--First row-->
-        <div class="four columns">
-                <a href="">
-                    <img src="https://media.istockphoto.com/photos/dog-food-in-the-bowl-and-bone-shaped-biscuits-picture-id678257014?k=6&m=678257014&s=612x612&w=0&h=Fw3Lnmn1BocKNEJQHbXQg4ch29Prt9ZAf3t26KpQtFg=" title="Beef & rice" alt="Beef & rice" height="350" width="350"/>
+
+<?php
+//outer for loop produces rows
+$currentRow = 0;
+
+for ($i = 0; $i < $totalRows; $i+= 3){
+
+echo '<div class="row">';
+
+//innner for loop produces columns
+for ($j = 0; $j <= 2; $j++){
+    $currentRow++;
+    if($currentRow <= $totalRows){ //fencepost fix prevents out of index columns
+    echo '<div class="four columns">
+            <div class="product-list__img">
+                <a href="product.php?id='.$rows[$i + $j]['product_id'].'">
+                    <img src="img/' . $rows[$i + $j]['Product_Image'] . '" title="' . $rows[$i + $j]['product_name'] .'" alt="' . $rows[$i + $j]['product_name'] .'" />
                 </a>
-                <h4>Beef & rice</h4>
-                <p>Reviews</p>
-<button onclick="window.location.href = '#';">Add to Cart!</button>
-        </div>
+            </div>
+            <h4>' . $rows[$i + $j]['product_name'] .'</h4>
+            <p>' . $rows[$i + $j]['product_desc'] .'</p>';
+    echo '<p>Reviews (' . fetchProductReviewCount($rows[$i + $j]['product_id'], $reviewQueryArray) . ')</p>';
+    echo '<a class="button" href="/product.php?id='.$rows[$i + $j]['product_id'].'">Add to Cart!</a>
+        </div>';
+    }
+}
 
-        <div class="four columns">
-                <a href="">
-                    <img src="https://media.istockphoto.com/photos/dog-food-in-the-bowl-and-bone-shaped-biscuits-picture-id678257014?k=6&m=678257014&s=612x612&w=0&h=Fw3Lnmn1BocKNEJQHbXQg4ch29Prt9ZAf3t26KpQtFg="  title="Beef & rice" alt="Beef & rice" height="350" width="350"/>
-                </a>
-                <h4>Beef & rice</h4>
-                <p>Reviews</p>
-                <button onclick="window.location.href = '#';">Add to Cart!</button>
-        </div>
+echo '</div>';
+}
+?>
 
-        <div class="four columns">
-                <a href="">
-                    <img src="https://media.istockphoto.com/photos/dog-food-in-the-bowl-and-bone-shaped-biscuits-picture-id678257014?k=6&m=678257014&s=612x612&w=0&h=Fw3Lnmn1BocKNEJQHbXQg4ch29Prt9ZAf3t26KpQtFg=" title="Beef & rice" alt="Beef & rice" height="350" width="350"/>
-                </a>
-                <h4>Beef & rice</h4>
-                <p>Reviews</p>
-                <button onclick="window.location.href = '#';">Add to Cart!</button>
-        </div>
-</div>
-
-    <div class="row"> <!--Second row-->
-        <div class="four columns">
-                <a href="">
-                    <img src="https://media.istockphoto.com/photos/dog-food-in-the-bowl-and-bone-shaped-biscuits-picture-id678257014?k=6&m=678257014&s=612x612&w=0&h=Fw3Lnmn1BocKNEJQHbXQg4ch29Prt9ZAf3t26KpQtFg=" title="Beef & rice" alt="Beef & rice" height="350" width="350"/>
-                </a>
-                <h4>Beef & rice</h4>
-                <p>Reviews</p>
-<button onclick="window.location.href = '#';">Add to Cart!</button>
-        </div>
-
-        <div class="four columns">
-                <a href="">
-                    <img src="https://media.istockphoto.com/photos/dog-food-in-the-bowl-and-bone-shaped-biscuits-picture-id678257014?k=6&m=678257014&s=612x612&w=0&h=Fw3Lnmn1BocKNEJQHbXQg4ch29Prt9ZAf3t26KpQtFg="  title="Beef & rice" alt="Beef & rice" height="350" width="350"/>
-                </a>
-                <h4>Beef & rice</h4>
-                <p>Reviews</p>
-                <button onclick="window.location.href = '#';">Add to Cart!</button>
-        </div>
-
-        <div class="four columns">
-                <a href="">
-                    <img src="https://media.istockphoto.com/photos/dog-food-in-the-bowl-and-bone-shaped-biscuits-picture-id678257014?k=6&m=678257014&s=612x612&w=0&h=Fw3Lnmn1BocKNEJQHbXQg4ch29Prt9ZAf3t26KpQtFg=" title="Beef & rice" alt="Beef & rice" height="350" width="350"/>
-                </a>
-                <h4>Beef & rice</h4>
-                <p>Reviews</p>
-                <button onclick="window.location.href = '#';">Add to Cart!</button>
-        </div>
-</div>
-
-    <div class="row"> <!--Third row-->
-        <div class="four columns">
-                <a href="">
-                    <img src="https://media.istockphoto.com/photos/dog-food-in-the-bowl-and-bone-shaped-biscuits-picture-id678257014?k=6&m=678257014&s=612x612&w=0&h=Fw3Lnmn1BocKNEJQHbXQg4ch29Prt9ZAf3t26KpQtFg=" title="Beef & rice" alt="Beef & rice" height="350" width="350"/>
-                </a>
-                <h4>Beef & rice</h4>
-                <p>Reviews</p>
-<button onclick="window.location.href = '#';">Add to Cart!</button>
-        </div>
-
-        <div class="four columns">
-                <a href="">
-                    <img src="https://media.istockphoto.com/photos/dog-food-in-the-bowl-and-bone-shaped-biscuits-picture-id678257014?k=6&m=678257014&s=612x612&w=0&h=Fw3Lnmn1BocKNEJQHbXQg4ch29Prt9ZAf3t26KpQtFg="  title="Beef & rice" alt="Beef & rice"height="350" width="350"/>
-                </a>
-                <h4>Beef & rice</h4>
-                <p>Reviews</p>
-                <button onclick="window.location.href = '#';">Add to Cart!</button>
-        </div>
-
-        <div class="four columns">
-                <a href="">
-                    <img src="https://media.istockphoto.com/photos/dog-food-in-the-bowl-and-bone-shaped-biscuits-picture-id678257014?k=6&m=678257014&s=612x612&w=0&h=Fw3Lnmn1BocKNEJQHbXQg4ch29Prt9ZAf3t26KpQtFg=" title="Beef & rice" alt="Beef & rice"height="350" width="350"/>
-                </a>
-                <h4>Beef & rice</h4>
-                <p>Reviews</p>
-                <button onclick="window.location.href = '#';">Add to Cart!</button>
-        </div>
-</div>
-
-    <div class="row"> <!--Fourth row-->
-        <div class="four columns">
-                <a href="">
-                    <img src="https://media.istockphoto.com/photos/dog-food-in-the-bowl-and-bone-shaped-biscuits-picture-id678257014?k=6&m=678257014&s=612x612&w=0&h=Fw3Lnmn1BocKNEJQHbXQg4ch29Prt9ZAf3t26KpQtFg=" title="Beef & rice" alt="Beef & rice"height="350" width="350"/>
-                </a>
-                <h4>Beef & rice</h4>
-                <p>Reviews</p>
-<button onclick="window.location.href = '#';">Add to Cart!</button>
-        </div>
-
-        <div class="four columns">
-                <a href="">
-                    <img src="https://media.istockphoto.com/photos/dog-food-in-the-bowl-and-bone-shaped-biscuits-picture-id678257014?k=6&m=678257014&s=612x612&w=0&h=Fw3Lnmn1BocKNEJQHbXQg4ch29Prt9ZAf3t26KpQtFg="  title="Beef & rice" alt="Beef & rice"height="350" width="350"/>
-                </a>
-                <h4>Beef & rice</h4>
-                <p>Reviews</p>
-                <button onclick="window.location.href = '#';">Add to Cart!</button>
-        </div>
-
-        <div class="four columns">
-                <a href="">
-                    <img src="https://media.istockphoto.com/photos/dog-food-in-the-bowl-and-bone-shaped-biscuits-picture-id678257014?k=6&m=678257014&s=612x612&w=0&h=Fw3Lnmn1BocKNEJQHbXQg4ch29Prt9ZAf3t26KpQtFg=" title="Beef & rice" alt="Beef & rice"height="350" width="350"/>
-                </a>
-                <h4>Beef & rice</h4>
-                <p>Reviews</p>
-                <button onclick="window.location.href = '#';">Add to Cart!</button>
-        </div>
-</div>
+</main>
 
 
-        </main>
 
 <?php include 'includes/footer.php'; ?>
